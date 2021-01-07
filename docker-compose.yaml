@@ -1,32 +1,40 @@
 version: '3'
 
 services: 
- 
+
   app:
     image: quay.io/keycloak/keycloak:11.0.2
     container_name: micro-auth-app
-    environment: 
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin
-      - DB_ADDR=db
-      - DB_VENDOR=mysql
-      - DB_DATABASE=micro_auth
-      - DB_PORT=3306
-      - DB_PASSWORD=root
-      - DB_USER=root
+    environment:
+      # - DB_ADDR=database
+      # - DB_VENDOR=postgres
+      # - DB_DATABASE=services-auth
+      # - DB_PORT=5432
+      # - DB_USER=admin
+      # - DB_PASSWORD=admin
+      DB_ADDR: database
+      DB_VENDOR: POSTGRES
+      DB_DATABASE: services-auth
+      DB_USER: admin
+      DB_PASSWORD: admin
+      # DB_SCHEMA: public
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
     ports: 
-      - 8080:8080
+      - "8080:8080"
     depends_on: 
-      - db
+      - database
 
-  db:
-    build: ./.docker/mysql
-    container_name: micro-auth-db
-    restart: always
+  database:
+    build: .docker/postgres
+    container_name: micro-auth-database
     tty: true
-    volumes: 
-      - ./.docker/dbdata:/var/lib/mysql
-    environment: 
-      - MYSQL_DATABASE=micro_auth
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=root
+    environment:
+      # - POSTGRES_DB=services-auth
+      # - POSTGRES_USER=admin
+      # - POSTGRES_PASSWORD=admin
+      POSTGRES_DB: services-auth
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - .docker/dbdata:/var/lib/postgresql/data
