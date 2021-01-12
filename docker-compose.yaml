@@ -21,24 +21,24 @@ services:
     depends_on: 
       - db
 
-  # database:
-  #   build: .docker/postgres
-  #   container_name: micro-auth-database
-  #   tty: true
-  #   environment:
-  #     POSTGRES_DB: services-auth
-  #     POSTGRES_USER: admin
-  #     POSTGRES_PASSWORD: admin
-  #   volumes:
-  #     - .docker/dbdata:/var/lib/postgresql/data
-
   db:
-    build: .docker/mysql
-    container_name: micro-auth-db
+    build: .docker/postgres
+    container_name: micro-auth-database
     tty: true
     environment:
-      MYSQL_DATABASE: services-auth
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: root
+      POSTGRES_DB: services-auth
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     volumes:
-      - ./.docker/dbdata:/var/lib/mysql
+      - .docker/dbdata:/var/lib/postgresql/data
+
+  # db:
+  #   build: .docker/mysql
+  #   container_name: micro-auth-db
+  #   tty: true
+  #   environment:
+  #     MYSQL_DATABASE: services-auth
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_USER: root
+  #   volumes:
+  #     - ./.docker/dbdata:/var/lib/mysql
